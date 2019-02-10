@@ -1,1 +1,2 @@
-# dse-k8-tutorial
+# Install DSE on Kubernetes like a BOSS
+
