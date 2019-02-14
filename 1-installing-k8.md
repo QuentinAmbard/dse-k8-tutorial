@@ -5,7 +5,7 @@ Make sure the instances are within an open VPC (ex: All traffic in/out over 172.
 
 Remove any existing installation:
 ```bash
-sudo yum install -y htop vim
+sudo yum install -y htop vim curl
 sudo yum remove docker docker-common docker-selinux docker-engine
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 ```

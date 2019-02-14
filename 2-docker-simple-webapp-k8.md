@@ -64,6 +64,10 @@ Tail your app logs:
 docker logs -f 5fddfe39a2cc
 ```
 
+Manually explore your container:
+```bash
+docker exec -t -i 5fddfe39a2cc /bin/sh
+```
 And finally stop it:
 
 ```bash

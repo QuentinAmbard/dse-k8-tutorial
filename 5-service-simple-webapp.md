@@ -19,7 +19,7 @@ metadata:
   labels:
     app: simple-app 
 spec:
-  type: NodePort #Makes the service available outside of the cluster on this port (30001). ClusterIP is default
+  type: NodePort #Makes the  service available outside of the cluster on this port (30001). ClusterIP is default
   ports:
   - port: 8080 #Our application port 
     nodePort: 30001
@@ -27,6 +27,11 @@ spec:
   selector:
     app: simple-app    # Label selector, much match our pod labels in the rs spec.template.metadata.labels
 ```
+
+pin nodes
+
+Driver => kill the pod if too many error for driver 3.x (because ip are cached before 4.0)
+
 
 Because this service is named `simple-app-svc`, K8 DNS will create an entry for this service and our webapp will become available on this fixed IP from inside our K8 cluster.
 
