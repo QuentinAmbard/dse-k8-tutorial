@@ -1,6 +1,6 @@
 #DSE specific 
 
-- TPC configuration: Cassandra node will be using the host number of cpu by default (not k8s aware). Set it manually to on cassandra.yaml to the k8 `spec.containers.resources.limit.cpu` value, to be tested !
+- TPC configuration: Cassandra node will be using the host number of cpu by default (not k8s aware). Set it manually `tpc_cores:` on cassandra.yaml to the k8 `spec.containers.resources.limit.cpu` value, to be tested !
 - Be careful of the other OS tuning settings. for example if Search is used, readahead need to be set on the k8 node, but might be also be required on the host too. (Need to be tested)
 - DSE 3.x driver don't detect a node restart with a different IP address. The issue is fixed in 4.0. Kill the app and restart it if using driver <4.0.0
 - Using Opscenter might be challenging when a node is being restarted with a different IP address.
@@ -31,3 +31,5 @@
     
     
 TODO: can't run command on statefulset?
+
+TODO: need run entry point as root => https://datastax.jira.com/browse/DOCKER-52

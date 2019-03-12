@@ -179,18 +179,25 @@ Or in a pv or storageClass change the volume gid to match your app user, which i
     pv.beta.kubernetes.io/gid: 999     
 ``` 
 
+```yaml
+  annotations:
+    pv.beta.kubernetes.io/gid: 999     
+``` 
+
 or in a pv or storageClass
 ```yaml
   annotations:
     volume.beta.kubernetes.io/mount-options: "uid=1000,gid=1000"
 ```
 
-or in a storage class:
+or in a storage class / persistent volume:
 
 ```yaml
 mountOptions: #these options
   - uid=1000
   - gid=1000
+  - dir_mode=0777
+  - file_mode=0777
 ```
 
 See https://stackoverflow.com/questions/51390789/kubernetes-persistent-volume-claim-mounted-with-wrong-gid/51481107 for some example

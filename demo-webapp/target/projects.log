@@ -1,0 +1,109 @@
+2019-03-12 22:04:02.548  INFO 10448 --- [main] hello.Application                        : Starting Application v0.1.0 on quentin-dell with PID 10448 (/home/quentin/projects/dse-k8-tutorial/demo-webapp/target/demo-webapp-0.1.0.jar started by quentin in /home/quentin/projects/dse-k8-tutorial/demo-webapp)
+2019-03-12 22:04:02.552  INFO 10448 --- [main] hello.Application                        : No active profile set, falling back to default profiles: default
+2019-03-12 22:04:03.868  INFO 10448 --- [main] com.datastax.driver.core                 : DataStax Java Driver 1.7.0 for DataStax Enterprise (DSE) and Apache Cassandra®
+2019-03-12 22:04:03.874  INFO 10448 --- [main] c.d.driver.core.GuavaCompatibility       : Detected Guava >= 19 in the classpath, using modern compatibility layer
+2019-03-12 22:04:03.885  INFO 10448 --- [main] hello.ProductService                     : ----------------------------------------
+2019-03-12 22:04:03.885  INFO 10448 --- [main] hello.ProductService                     : Starting demo with:
+2019-03-12 22:04:03.885  INFO 10448 --- [main] hello.ProductService                     : contactPoint=localhost
+2019-03-12 22:04:03.885  INFO 10448 --- [main] hello.ProductService                     : speculativeRetry=false
+2019-03-12 22:04:03.885  INFO 10448 --- [main] hello.ProductService                     : CL=LOCAL_QUORUM
+2019-03-12 22:04:03.885  INFO 10448 --- [main] hello.ProductService                     : allowRemoteHosts=false
+2019-03-12 22:04:03.886  INFO 10448 --- [main] hello.ProductService                     : ----------------------------------------
+2019-03-12 22:04:04.136  INFO 10448 --- [main] com.datastax.driver.core.ClockFactory    : Using native clock to generate timestamps.
+2019-03-12 22:04:04.311  INFO 10448 --- [main] com.datastax.driver.core.utils.UUIDs     : PID obtained through native call to getpid(): 10448
+2019-03-12 22:04:04.376  INFO 10448 --- [main] com.datastax.driver.core.NettyUtil       : Did not find Netty's native epoll transport in the classpath, defaulting to NIO.
+2019-03-12 22:04:04.731  INFO 10448 --- [main] c.d.d.c.p.DCAwareRoundRobinPolicy        : Using data-center name 'datacenter1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+2019-03-12 22:04:04.733  INFO 10448 --- [main] com.datastax.driver.core.Cluster         : New Cassandra host localhost/127.0.0.1:9042 added
+2019-03-12 22:04:05.215  INFO 10448 --- [main] com.datastax.driver.core.ClockFactory    : Using native clock to generate timestamps.
+2019-03-12 22:04:05.314  INFO 10448 --- [main] hello.Application                        : Started Application in 3.25 seconds (JVM running for 3.665)
+2019-03-12 22:08:26.814  INFO 11313 --- [main] hello.Application                        : Starting Application v0.1.0 on quentin-dell with PID 11313 (/home/quentin/projects/dse-k8-tutorial/demo-webapp/target/demo-webapp-0.1.0.jar started by quentin in /home/quentin/projects/dse-k8-tutorial/demo-webapp)
+2019-03-12 22:08:26.817  INFO 11313 --- [main] hello.Application                        : No active profile set, falling back to default profiles: default
+2019-03-12 22:08:28.057  INFO 11313 --- [main] com.datastax.driver.core                 : DataStax Java Driver 1.7.0 for DataStax Enterprise (DSE) and Apache Cassandra®
+2019-03-12 22:08:28.064  INFO 11313 --- [main] c.d.driver.core.GuavaCompatibility       : Detected Guava >= 19 in the classpath, using modern compatibility layer
+2019-03-12 22:08:28.076  INFO 11313 --- [main] hello.ProductService                     : ----------------------------------------
+2019-03-12 22:08:28.076  INFO 11313 --- [main] hello.ProductService                     : Starting demo with:
+2019-03-12 22:08:28.076  INFO 11313 --- [main] hello.ProductService                     : contactPoint=localhost
+2019-03-12 22:08:28.076  INFO 11313 --- [main] hello.ProductService                     : speculativeRetry=false
+2019-03-12 22:08:28.076  INFO 11313 --- [main] hello.ProductService                     : CL=LOCAL_QUORUM
+2019-03-12 22:08:28.077  INFO 11313 --- [main] hello.ProductService                     : allowRemoteHosts=false
+2019-03-12 22:08:28.077  INFO 11313 --- [main] hello.ProductService                     : ----------------------------------------
+2019-03-12 22:08:28.302  INFO 11313 --- [main] com.datastax.driver.core.ClockFactory    : Using native clock to generate timestamps.
+2019-03-12 22:08:28.489  INFO 11313 --- [main] com.datastax.driver.core.utils.UUIDs     : PID obtained through native call to getpid(): 11313
+2019-03-12 22:08:28.574  INFO 11313 --- [main] com.datastax.driver.core.NettyUtil       : Did not find Netty's native epoll transport in the classpath, defaulting to NIO.
+2019-03-12 22:08:28.926  INFO 11313 --- [main] c.d.d.c.p.DCAwareRoundRobinPolicy        : Using data-center name 'datacenter1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+2019-03-12 22:08:28.927  INFO 11313 --- [main] com.datastax.driver.core.Cluster         : New Cassandra host localhost/127.0.0.1:9042 added
+2019-03-12 22:08:29.331  INFO 11313 --- [main] com.datastax.driver.core.ClockFactory    : Using native clock to generate timestamps.
+2019-03-12 22:08:29.459  INFO 11313 --- [main] hello.Application                        : Started Application in 3.097 seconds (JVM running for 3.531)
+2019-03-12 22:08:36.408  INFO 11377 --- [main] hello.Application                        : Starting Application v0.1.0 on quentin-dell with PID 11377 (/home/quentin/projects/dse-k8-tutorial/demo-webapp/target/demo-webapp-0.1.0.jar started by quentin in /home/quentin/projects/dse-k8-tutorial/demo-webapp)
+2019-03-12 22:08:36.412  INFO 11377 --- [main] hello.Application                        : No active profile set, falling back to default profiles: default
+2019-03-12 22:08:37.730  INFO 11377 --- [main] com.datastax.driver.core                 : DataStax Java Driver 1.7.0 for DataStax Enterprise (DSE) and Apache Cassandra®
+2019-03-12 22:08:37.738  INFO 11377 --- [main] c.d.driver.core.GuavaCompatibility       : Detected Guava >= 19 in the classpath, using modern compatibility layer
+2019-03-12 22:08:37.850  WARN 11377 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'application': Unsatisfied dependency expressed through field 'taskService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'productService': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Failed to add contact point: localhostaaa
+2019-03-12 22:08:37.893 ERROR 11377 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'application': Unsatisfied dependency expressed through field 'taskService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'productService': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Failed to add contact point: localhostaaa
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:586)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:372)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:572)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:495)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:759)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:869)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:780)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:412)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:333)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1277)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1265)
+	at hello.Application.main(Application.java:24)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:48)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:87)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:50)
+	at org.springframework.boot.loader.JarLauncher.main(JarLauncher.java:51)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'productService': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Failed to add contact point: localhostaaa
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:139)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:416)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1691)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:573)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:495)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:251)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1135)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1062)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:583)
+	... 27 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Failed to add contact point: localhostaaa
+	at com.datastax.driver.core.Cluster$Builder.addContactPoint(Cluster.java:924)
+	at com.datastax.driver.dse.DseCluster$Builder.addContactPoint(DseCluster.java:213)
+	at hello.ProductService.startCassandraConnection(ProductService.java:48)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:366)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:309)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:136)
+	... 39 common frames omitted
+Caused by: java.net.UnknownHostException: localhostaaa: Name or service not known
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1193)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1127)
+	at com.datastax.driver.core.Cluster$Builder.addContactPoint(Cluster.java:921)
+	... 48 common frames omitted
+
