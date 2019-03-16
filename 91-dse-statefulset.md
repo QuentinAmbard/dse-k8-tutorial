@@ -113,23 +113,18 @@ kubectl get pods -l app=dse
 
 Our service is now running and we can access it:
 ```bash
-kubectl describe service simple-app-service
-Name:                     simple-app-service
-Namespace:                default
-Labels:                   app=simple-app
-Annotations:              <none>
-Selector:                 app=simple-app
-Type:                     NodePort
-IP:                       100.70.217.22
-Port:                     web  8080/TCP
-TargetPort:               8080/TCP
-NodePort:                 web  30001/TCP
-Endpoints:                100.96.1.24:8080,100.96.2.26:8080,100.96.2.27:8080
-Session Affinity:         None
-External Traffic Policy:  Cluster
-Events:                   <none>
+kubectl describe service dse-service
+Name:              dse-service
+Namespace:         default
+Labels:            app=dse
+Annotations:       <none>
+Selector:          app=dse
+Type:              ClusterIP
+IP:                None
+Port:              cql  9042/TCP
+TargetPort:        9042/TCP
+Endpoints:         <none>
+Session Affinity:  None
+Events:            <none>
 
-
-curl simple-app-service:8080
-Hello Docker World V2
 ```

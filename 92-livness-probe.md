@@ -1,4 +1,4 @@
-# Liveness prob
+# Liveness & readiness prob
 
 You might want to monitor your application with a more advanced solution. For example execute a custom script to check if the app is running or check for a specific port.
 
@@ -104,7 +104,7 @@ else
   exit 1;
 fi
 ```
-This script requests the $POD_IP env variable to be set. We can get it from  `fieldRef.fieldPath: status.podIP`:
+This script requests the $POD_IP env variable to be set. We can get it from  `fieldRef.fieldPath: status.podIP`: (see below)
 
 
 ```yaml
