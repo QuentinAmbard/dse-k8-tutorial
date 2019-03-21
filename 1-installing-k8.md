@@ -54,19 +54,19 @@ You might need to add aws in your PATH: `echo "export PATH=~/.local/bin/:$PATH" 
 !! You must set a unique cluster name and s3 bucket name. Make sure your cluster name ends by `.k8s.local` !!
 ```bash
 export BUCKET_NAME=qa11-kops-state-store
+export NAME=k8cluster.k8s.local
+export KOPS_STATE_STORE="s3://$BUCKET_NAME"
 aws s3api create-bucket     --bucket $BUCKET_NAME     --region eu-west-3  --create-bucket-configuration LocationConstraint=eu-west-3
 aws s3api put-bucket-versioning --bucket $BUCKET_NAME --versioning-configuration Status=Enabled
 aws s3api put-bucket-encryption --bucket $BUCKET_NAME --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
-export NAME=k8cluster.k8s.local
-export KOPS_STATE_STORE="s3://$BUCKET_NAME"
 
-#make sure you have a key we'll be using to access the nodes, if not create it with ssh-keygen -b 2048 -t rsa
+#make sure you have a key we'll be using to access the nodes, if not create it with:
+# ssh-keygen -b 2048 -t rsa && chmod 600
 kops create secret --name k8cluster.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub
 kops create cluster --zones eu-west-3a  --networking flannel-vxlan --node-count 5 --node-size t2.medium --master-size t2.small ${NAME}
 kops update cluster k8cluster.k8s.local --yes
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
 ```
-NOTE: you might want to remove public access to the S3 bucket. 
 
 NOTE: if something is wrong, to delete cluster, run `kops delete cluster k8cluster.k8s.local --yes`
 
@@ -98,11 +98,9 @@ users:
   user:
     password: xxxxxxxx
     username: xxxxxxxx
-
 ```
 Check its state with 
 ```bash
-kubectl get nodes --show-labels
 kubectl get nodes --show-labels
 NAME                                          STATUS   ROLES    AGE   VERSION   LABELS
 ip-172-20-34-65.eu-west-3.compute.internal    Ready    node     41s   v1.11.7   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=eu-west-3,failure-domain.beta.kubernetes.io/zone=eu-west-3a,kops.k8s.io/instancegroup=nodes,kubernetes.io/hostname=ip-172-20-34-65.eu-west-3.compute.internal,kubernetes.io/role=node,node-role.kubernetes.io/node=
