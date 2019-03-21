@@ -1,4 +1,4 @@
-#DSE specific 
+# DSE specific 
 
 - TPC configuration: Cassandra node will be using the host number of cpu by default (not k8s aware). Set it manually `tpc_cores:` on cassandra.yaml to the k8 `spec.containers.resources.limit.cpu` value, to be tested !
 - Be careful of the other OS tuning settings. for example if Search is used, readahead need to be set on the k8 node, but might be also be required on the host too. (Need to be tested)

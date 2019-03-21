@@ -1,7 +1,7 @@
 # Running kubernets on multiple AZ
 
-## Using kubernetes selector spread priority and downwardAPI
-### 1 Kubernetes Region/zone
+## Solution 1: Using kubernetes selector spread priority and downwardAPI
+### Kubernetes Region/zone
 
 Kubernetes can handle multiple AZ in a same region using SelectorSpreadPriority.
 
@@ -28,7 +28,7 @@ https://kubernetes.io/docs/setup/multiple-zones/
 
 https://kubernetes.io/docs/reference/kubernetes-api/labels-annotations-taints/
 
-### 2 define DSE rack using the downwardAPI
+### Define DSE rack using the downwardAPI
 Now that our volumes are aware of the region, we need to find a way to share the region to the POD to be able to mark the nodes as being part of a specific RACK or DATACENTER.
 
 We want the nodes from `us-central1-a` to have `RACK=us-central1-a` in our `cassandra-rackdc.properties` file.
@@ -84,7 +84,7 @@ With this information, we can now adapt the `entrypoint.sh` script and read the 
 
 More details: https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/#the-downward-api
 
-#Using multiple deployment
+# Solution 2: Using multiple deployment
 Another way to deploy across multiple Zones would be to use multiple deployment.
 
 A helm chart could be created and the rack could be defined in a helm template. We would have 1 deployment per rack, merge in a single cluster/datacenter.
