@@ -47,7 +47,7 @@ pip3 install awscli --upgrade --user
 #configure aws cli with a secret:
 aws configure
 ```
-You might need to add aws in your PATH: `vim ~/.bashrc` => `export PATH=~/.local/bin/:$PATH`
+You might need to add aws in your PATH: `echo "export PATH=~/.local/bin/:$PATH" >> ~/.bashrc && source ~/.bashrc`
 
 ### 4: Configure and run kops
 
