@@ -4,9 +4,13 @@
 
 ### 0: Start a new instance to run kubectl and kops
 
-Go on AWS console, start a small redhat instance and open SSH connection to this instance.
+Go on AWS console, start a micro redhat instance (tag it with your name) and open SSH connection to this instance.
 
-Open all ports in the instance security group as we'll use it for our docker registry 
+Open all ports in the instance security group as we'll use it for our docker registry
+
+```bash
+ssh -i /home/quentin/Download/mykey ec2user@<instanceIP>
+``` 
 
 ### 1: install kops
 We'll be installing kubernetes using kops. Follow https://github.com/kubernetes/kops/blob/master/docs/install.md
@@ -25,14 +29,19 @@ curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/$(cur
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 ```
+Install kubectl autocompletion command 
+```bash
+yum install -y bash-completion
+kubectl completion bash
+```
 ### 3: Install aws cli
 
 
 ```bash
-sudo yum install vim wget htop
+sudo yum install -y vim wget htop
 wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sudo rpm -ivh epel-release-latest-7.noarch.rpm
-sudo yum install python36 python36-setuptools
+sudo yum install -y python36 python36-setuptools
 sudo easy_install-3.6 pip
 pip3 install awscli --upgrade --user
 #configure aws cli with a secret:
