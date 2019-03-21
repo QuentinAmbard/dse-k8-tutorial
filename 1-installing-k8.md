@@ -53,11 +53,12 @@ You might need to add aws in your PATH: `echo "export PATH=~/.local/bin/:$PATH" 
 
 !! You must set a unique s3 bucket name. Make sure your cluster name ends by `.k8s.local` !!
 ```bash
-aws s3api create-bucket     --bucket qa11-kops-state-store     --region eu-west-3  --create-bucket-configuration LocationConstraint=eu-west-3
-aws s3api put-bucket-versioning --bucket qa11-kops-state-store --versioning-configuration Status=Enabled
-aws s3api put-bucket-encryption --bucket qa11-kops-state-store --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
+export BUCKET_NAME=qa11-kops-state-store
+aws s3api create-bucket     --bucket $BUCKET_NAME     --region eu-west-3  --create-bucket-configuration LocationConstraint=eu-west-3
+aws s3api put-bucket-versioning --bucket $BUCKET_NAME --versioning-configuration Status=Enabled
+aws s3api put-bucket-encryption --bucket $BUCKET_NAME --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
 export NAME=k8cluster.k8s.local
-export KOPS_STATE_STORE=s3://qa11-kops-state-store
+export KOPS_STATE_STORE="s3://$BUCKET_NAME"
 
 #make sure you have a key we'll be using to access the nodes, if not create it with ssh-keygen -b 2048 -t rsa
 kops create secret --name k8cluster.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub
