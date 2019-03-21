@@ -1,5 +1,109 @@
 # Install Kubernetes
 
+## Easy install with KOPS
+
+### 0: Start a new instance to run kubectl and kops
+
+Go on AWS console, start a small redhat instance and open SSH connection to this instance.
+
+Open all ports in the instance security group as we'll use it for our docker registry 
+
+### 1: install kops
+We'll be installing kubernetes using kops. Follow https://github.com/kubernetes/kops/blob/master/docs/install.md
+
+```bash
+curl -Lo kops https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+chmod +x ./kops
+sudo mv ./kops /usr/local/bin/
+```
+Notes: details on aws specific config: https://github.com/kubernetes/kops/blob/master/docs/aws.md
+
+### 2: Install kubect
+
+```bash
+curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+```
+### 3: Install aws cli
+
+
+```bash
+sudo yum install vim wget htop
+wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo rpm -ivh epel-release-latest-7.noarch.rpm
+sudo yum install python36 python36-setuptools
+sudo easy_install-3.6 pip
+pip3 install awscli --upgrade --user
+#configure aws cli with a secret:
+aws configure
+```
+You might need to add aws in your PATH: `vim ~/.bashrc` => `export PATH=~/.local/bin/:$PATH`
+
+### 4: Configure and run kops
+
+```bash
+aws s3api create-bucket     --bucket qa11-kops-state-store     --region eu-west-3  --create-bucket-configuration LocationConstraint=eu-west-3
+aws s3api put-bucket-versioning --bucket qa11-kops-state-store --versioning-configuration Status=Enabled
+aws s3api put-bucket-encryption --bucket qa11-kops-state-store --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
+export NAME=k8cluster.k8s.local
+export KOPS_STATE_STORE=s3://qa11-kops-state-store
+
+#make sure you have a key we'll be using to access the nodes, if not create it with ssh-keygen -b 2048 -t rsa
+kops create secret --name k8cluster.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub
+kops create cluster --zones eu-west-3a  --networking flannel-vxlan --node-count 5 --node-size t2.medium --master-size t2.small ${NAME}
+kops update cluster k8cluster.k8s.local --yes
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+```
+NOTE: you might want to remove public access to the S3 bucket. 
+
+NOTE: if something is wrong, to delete cluster, run `kops delete cluster k8cluster.k8s.local --yes`
+
+Your cluster must now be starting. the kubectl is setup with your new kubernetes configuration:
+```bash
+kubectl config view
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://xxxxxxxx
+  name: k8cluster.k8s.local
+contexts:
+- context:
+    cluster: k8cluster.k8s.local
+    user: k8cluster.k8s.local
+  name: k8cluster.k8s.local
+current-context: k8cluster.k8s.local
+kind: Config
+preferences: {}
+users:
+- name: k8cluster.k8s.local
+  user:
+    client-certificate-data: REDACTED
+    client-key-data: REDACTED
+    password: xxxxxxxx
+    username: xxxxxxxx
+- name: k8cluster.k8s.local-basic-auth
+  user:
+    password: xxxxxxxx
+    username: xxxxxxxx
+
+```
+Check its state with 
+```bash
+kubectl get nodes --show-labels
+kubectl get nodes --show-labels
+NAME                                          STATUS   ROLES    AGE   VERSION   LABELS
+ip-172-20-34-65.eu-west-3.compute.internal    Ready    node     41s   v1.11.7   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=eu-west-3,failure-domain.beta.kubernetes.io/zone=eu-west-3a,kops.k8s.io/instancegroup=nodes,kubernetes.io/hostname=ip-172-20-34-65.eu-west-3.compute.internal,kubernetes.io/role=node,node-role.kubernetes.io/node=
+ip-172-20-45-192.eu-west-3.compute.internal   Ready    node     38s   v1.11.7   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=eu-west-3,failure-domain.beta.kubernetes.io/zone=eu-west-3a,kops.k8s.io/instancegroup=nodes,kubernetes.io/hostname=ip-172-20-45-192.eu-west-3.compute.internal,kubernetes.io/role=node,node-role.kubernetes.io/node=
+ip-172-20-46-179.eu-west-3.compute.internal   Ready    master   1m    v1.11.7   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.small,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=eu-west-3,failure-domain.beta.kubernetes.io/zone=eu-west-3a,kops.k8s.io/instancegroup=master-eu-west-3a,kubernetes.io/hostname=ip-172-20-46-179.eu-west-3.compute.internal,kubernetes.io/role=master,node-role.kubernetes.io/master=
+ip-172-20-54-24.eu-west-3.compute.internal    Ready    node     38s   v1.11.7   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=eu-west-3,failure-domain.beta.kubernetes.io/zone=eu-west-3a,kops.k8s.io/instancegroup=nodes,kubernetes.io/hostname=ip-172-20-54-24.eu-west-3.compute.internal,kubernetes.io/role=node,node-role.kubernetes.io/node=
+ip-172-20-55-211.eu-west-3.compute.internal   Ready    node     42s   v1.11.7   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=eu-west-3,failure-domain.beta.kubernetes.io/zone=eu-west-3a,kops.k8s.io/instancegroup=nodes,kubernetes.io/hostname=ip-172-20-55-211.eu-west-3.compute.internal,kubernetes.io/role=node,node-role.kubernetes.io/node=
+ip-172-20-63-206.eu-west-3.compute.internal   Ready    node     44s   v1.11.7   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=eu-west-3,failure-domain.beta.kubernetes.io/zone=eu-west-3a,kops.k8s.io/instancegroup=nodes,kubernetes.io/hostname=ip-172-20-63-206.eu-west-3.compute.internal,kubernetes.io/role=node,node-role.kubernetes.io/node=
+```
+
+
+## Manual installation
 Start 3 CentOS instances on EC2 and start installing docker on your 3 instances:
 Make sure the instances are within an open VPC (ex: All traffic in/out over 172.31.0.0/16)
 
