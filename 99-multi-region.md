@@ -70,12 +70,12 @@ spec:
 now we can start the pod, the labels and annotations will be saved in their respective path:
 
 ```bash
-kubectl exec -it dse-0 -- cat /etc/podinfo/labels
+kubectl exec -it kubernetes-downwardapi-volume-example -- cat /etc/podinfo/labels
 cluster="test-cluster1"
 rack="rack-22"
 zone="us-est-coast"
 
-kubectl exec -it dse-0 -- cat /etc/podinfo/annotations
+kubectl exec -it kubernetes-downwardapi-volume-example -- cat /etc/podinfo/annotations
 build="two"
 builder="john-doe"
 ```
