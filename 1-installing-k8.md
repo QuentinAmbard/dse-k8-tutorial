@@ -51,7 +51,7 @@ You might need to add aws in your PATH: `echo "export PATH=~/.local/bin/:$PATH" 
 
 ### 4: Configure and run kops
 
-!! You must set a unique s3 bucket name. Make sure your cluster name ends by `.k8s.local` !!
+!! You must set a unique cluster name and s3 bucket name. Make sure your cluster name ends by `.k8s.local` !!
 ```bash
 export BUCKET_NAME=qa11-kops-state-store
 aws s3api create-bucket     --bucket $BUCKET_NAME     --region eu-west-3  --create-bucket-configuration LocationConstraint=eu-west-3
