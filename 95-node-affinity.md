@@ -101,3 +101,5 @@ spec:
 ```
 labels 
 pin dse to k8 host
+
+https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
