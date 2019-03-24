@@ -61,16 +61,31 @@ public class ProductService {
             cluster.withLoadBalancingPolicy(DCAwareRoundRobinPolicy.builder().allowRemoteDCsForLocalConsistencyLevel().withUsedHostsPerRemoteDc(2).build());
         }
         cluster.withQueryOptions(qo);
-        session = cluster.build().connect();
-        String dc2Command = "";
-        if(dc2 != null && dc2.length()>0){
-            dc2Command = ", '"+dc2+"': 1";
+        int retry = 0;
+        while (retry < 10) {
+            try {
+                session = cluster.build().connect();
+                String dc2Command = "";
+                if (dc2 != null && dc2.length() > 0) {
+                    dc2Command = ", '" + dc2 + "': 1";
+                }
+                String ksCreation = "CREATE KEYSPACE IF NOT EXISTS demo WITH replication = {'class': 'NetworkTopologyStrategy', '" + dc1 + "': 1 " + dc2Command + "}";
+                log.info(ksCreation);
+                session.execute(ksCreation);
+                session.execute("CREATE TABLE IF NOT EXISTS demo.products (id int PRIMARY KEY, name text, price int)");
+                session.execute("INSERT INTO demo.products (id, name, price) values (1, 'iphone X', 1199)");
+                session.execute("INSERT INTO demo.products (id, name, price) values (2, 'Samsung S9', 800)");
+                selectProductsSt = session.prepare("select * from demo.products");
+                retry = Integer.MAX_VALUE;
+            } catch (Exception e){
+                retry ++;
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
-        session.execute("CREATE KEYSPACE IF NOT EXISTS demo WITH replication = {'class': 'NetworkTopologyStrategy', '"+dc1+"': 1 "+dc2Command+"}");
-        session.execute("CREATE TABLE IF NOT EXISTS demo.products (id int PRIMARY KEY, name text, price int)");
-        session.execute("INSERT INTO demo.products (id, name, price) values (1, 'iphone X', 1199)");
-        session.execute("INSERT INTO demo.products (id, name, price) values (2, 'Samsung S9', 800)");
-        selectProductsSt = session.prepare("select * from demo.products");
     }
 
     public List<Product> getTasks() {
