@@ -1,6 +1,6 @@
 # Accessing DSE from the outside
 
-##pinning a node to a host
+## pinning a node to a host
 
 Accessing the node from outside the cluster is challenging. 
 
@@ -11,11 +11,11 @@ in order to pin dse to a restricted set of k8 host, put labels on the nodes:
 kubectl label nodes <node-name> <label-key>=<label-value>
 ```
 
-##Using Hostport
+## Using Hostport
 Now that our pods are pinned to a specific host, we need to expose our pod port to the host.
 It can be done with the `hostPort: 9042` instruction.
 
-##using NodePort
+## using NodePort
 
 A better way is to use a NodePort service with `spec.externalTrafficPolicy: Local`. By setting the policy to local, the host will only forward the traffic to the local pods. Because we only deploy 1 DSE node per k8 host, it'll redirect the traffic to the proper dse node. 
 

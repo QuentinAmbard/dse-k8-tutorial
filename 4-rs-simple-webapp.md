@@ -113,7 +113,7 @@ ReplicaSet and Pod are loosely coupled. You can delete a replicaset and keep the
 
 We can also recreate a new replicaset which will "adopt" the pod matching its labels
 
-##Scaling our Simple App
+## Scaling our Simple App
 Let's say that we need to scale our simple app to 5 instances, but we also want to make sure that it won't use too much RAM and CPU in our cluster.
 
 We can update our simple-app-rs.yaml with the following

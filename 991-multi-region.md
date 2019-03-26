@@ -1,5 +1,9 @@
 # Running kubernets on multiple AZ
 
+AWS Availability Zones can be used to create multiple DSE DC or probably better: create 1 single DC on 3 racks. 
+
+!! Remember that an AWS EBS can't move from one AZ to another !! 
+
 ## Solution 1: Using kubernetes selector spread priority and downwardAPI
 ### Kubernetes Region/zone
 
@@ -14,13 +18,14 @@ failure-domain.beta.kubernetes.io/zone
  
 The `SelectorSpreadPriority` will then try to spread the replicas across zones in a best effort mode.
 
-Thanksfully, the Partition Volume Claim are aware of zone. Once a pv is mounted in a specific region, it won't be re-mounted in another one:
+Thankfully, the Partition Volume Claim are aware of zone. Once a pv is mounted in a specific region, it won't be re-mounted in another one:
 
 ```bash
 kubectl get pv --show-labels
 NAME           CAPACITY   ACCESSMODES   RECLAIM POLICY   STATUS    CLAIM            STORAGECLASS    REASON    AGE       LABELS
 pv-gce-mj4gm   5Gi        RWO           Retain           Bound     default/claim1   manual                    46s       failure-domain.beta.kubernetes.io/region=us-central1,failure-domain.beta.kubernetes.io/zone=us-central1-a
 ```
+
 
 More details: 
 

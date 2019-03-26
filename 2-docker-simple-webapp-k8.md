@@ -11,7 +11,7 @@ go into ./simple-webapp, build the app and try to start it:
 
 go to http://localhost:8080 to see your "Hello Docker World" message.
 
-##Let's containerize it!
+## Let's containerize it!
 
 Docker has a unique format: Dockerfile.
 
