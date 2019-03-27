@@ -26,7 +26,7 @@ Notes: details on aws specific config: https://github.com/kubernetes/kops/blob/m
 ### 2: Install kubect
 
 ```bash
-curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
+curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 ```
@@ -64,7 +64,7 @@ aws s3api put-bucket-encryption --bucket $BUCKET_NAME --server-side-encryption-c
 
 kops create cluster --zones eu-west-2a  --networking flannel-vxlan --node-count 3 --node-size t2.medium --master-size t2.small ${NAME}
 #make sure you have a key we'll be using to access the nodes, if not create it with:
-# ssh-keygen -b 2048 -t rsa && chmod 600
+# ssh-keygen -b 2048 -t rsa && chmod 600 ~/.ssh/id_rsa ~/.ssh/id_rsa.pub
 kops create secret --name $NAME sshpublickey admin -i ~/.ssh/id_rsa.pub
 kops update cluster $NAME --yes
 
