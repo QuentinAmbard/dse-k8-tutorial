@@ -33,7 +33,7 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 Install kubectl autocompletion command 
 ```bash
 yum install -y bash-completion
-kubectl completion bash
+echo 'source <(kubectl completion bash)' >>~/.bashrc &&  source ~/.bashrc
 ```
 ### 3: Install aws cli
 
