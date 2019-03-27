@@ -64,7 +64,7 @@ aws s3api put-bucket-encryption --bucket $BUCKET_NAME --server-side-encryption-c
 
 #make sure you have a key we'll be using to access the nodes, if not create it with:
 # ssh-keygen -b 2048 -t rsa && chmod 600
-kops create secret --name k8cluster.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub
+kops create secret --name $NAME sshpublickey admin -i ~/.ssh/id_rsa.pub
 kops create cluster --zones eu-west-3a  --networking flannel-vxlan --node-count 3 --node-size t2.medium --master-size t2.small ${NAME}
 kops update cluster k8cluster.k8s.local --yes
 
