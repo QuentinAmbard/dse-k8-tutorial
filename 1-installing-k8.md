@@ -62,11 +62,11 @@ aws s3api create-bucket     --bucket $BUCKET_NAME     --region eu-west-2  --crea
 aws s3api put-bucket-versioning --bucket $BUCKET_NAME --versioning-configuration Status=Enabled
 aws s3api put-bucket-encryption --bucket $BUCKET_NAME --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
 
+kops create cluster --zones eu-west-2a  --networking flannel-vxlan --node-count 3 --node-size t2.medium --master-size t2.small ${NAME}
 #make sure you have a key we'll be using to access the nodes, if not create it with:
 # ssh-keygen -b 2048 -t rsa && chmod 600
-kops create cluster --zones eu-west-2a  --networking flannel-vxlan --node-count 3 --node-size t2.medium --master-size t2.small ${NAME}
 kops create secret --name $NAME sshpublickey admin -i ~/.ssh/id_rsa.pub
-kops update cluster k8cluster.k8s.local --yes
+kops update cluster $NAME --yes
 
 ```
 
