@@ -9,7 +9,8 @@ Go on AWS console, start a micro redhat instance (tag it with your name) and ope
 Open all ports in the instance security group as we'll use it for our docker registry
 
 ```bash
-ssh -i /home/quentin/Download/mykey ec2user@<instanceIP>
+chmod 600 ~/Downloads/quentin_training.pem
+ssh -i /home/quentin/Download/mykey root@<instanceIP>
 ``` 
 
 ### 1: install kops
@@ -54,10 +55,10 @@ You might need to add aws in your PATH: `echo "export PATH=~/.local/bin/:$PATH" 
 !! You must set a unique cluster name and s3 bucket name. Make sure your cluster name ends by `.k8s.local` !!
 
 ```bash
-export BUCKET_NAME=qa11-kops-state-store
-export NAME=k8cluster.k8s.local
+export BUCKET_NAME=qa2-kops-state-store
+export NAME=qa2-k8cluster.k8s.local
 export KOPS_STATE_STORE="s3://$BUCKET_NAME"
-aws s3api create-bucket     --bucket $BUCKET_NAME     --region eu-west-3  --create-bucket-configuration LocationConstraint=eu-west-3
+aws s3api create-bucket     --bucket $BUCKET_NAME     --region eu-west-2  --create-bucket-configuration LocationConstraint=eu-west-2
 aws s3api put-bucket-versioning --bucket $BUCKET_NAME --versioning-configuration Status=Enabled
 aws s3api put-bucket-encryption --bucket $BUCKET_NAME --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
 
