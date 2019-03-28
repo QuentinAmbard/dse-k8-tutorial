@@ -64,7 +64,7 @@ metadata:
 spec:
   containers:
   - name: simple-app #pod name
-    image: 35.180.131.219:5000/k8-training/simple-webapp
+    image: 553261234129.dkr.ecr.eu-west-2.amazonaws.com/k8s-training:quentin
     ports:
     - containerPort: 8080 #we expose the port our webapp is running on
     volumeMounts:
@@ -112,7 +112,7 @@ metadata:
 spec:
   containers:
   - name: simple-app #pod name
-    image: 35.180.131.219:5000/k8-training/simple-webapp
+    image: 553261234129.dkr.ecr.eu-west-2.amazonaws.com/k8s-training:quentin
     ports:
     - containerPort: 8080 #we expose the port our webapp is running on
     volumeMounts:

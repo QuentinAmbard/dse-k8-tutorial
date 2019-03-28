@@ -7,6 +7,7 @@ To deploy a Pod to a Kubernetes cluster we define it in a manifest file and then
 Each Pod creates its own network namespace - a single IP address, a single range of ports, and a single routing table. if the Pod is a multi-container Pod - each container in a Pod shares the Pods IP, range of ports, and routing table.
 
 Connect to your master node and create a simple-app-pod.yaml file with the following:
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -18,16 +19,9 @@ metadata:
 spec:
   containers:
   - name: simple-app #pod name
-    image: 35.180.131.219:5000/k8-training/simple-webapp
+    image: 553261234129.dkr.ecr.eu-west-2.amazonaws.com/k8s-training:quentin
     ports:
     - containerPort: 8080 #we expose the port our webapp is running on
-```
-As our local registry isn't over TLS, make sure the following is set on your 3 nodes:
-
-```bash
-echo '{ "insecure-registries":["<registryIP>:5000"] }' > /etc/docker/daemon.json
-service docker restart
-service kubelet restart
 ```
 
 Then start your pod:
