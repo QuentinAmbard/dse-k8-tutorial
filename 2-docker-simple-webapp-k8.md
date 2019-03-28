@@ -3,18 +3,48 @@
 The goal is to create a simple docker image containing a webapp do be able to deploy it on our k8 cluster.
 
 ## Build our app
+Install maven and git
+```bash
+sudo yum install java-1.8.0 maven git -y
+git clone https://github.com/QuentinAmbard/dse-k8-tutorial.git
+
+cd /usr/local/src
+wget http://www-us.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+tar -xf apache-maven-3.5.4-bin.tar.gz
+mv apache-maven-3.5.4/ apache-maven/
+echo "export M2_HOME=/usr/local/src/apache-maven" >> ~/.bashrc
+echo "export PATH=${M2_HOME}/bin:${PATH}" >> ~/.bashrc
+source ~/.bashrc
+cd
+mvn -version
+```
+
+Install docker: start by removing any existing installation:
+```bash
+sudo yum install -y htop vim curl
+sudo yum remove docker docker-common docker-selinux docker-engine
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+```
+redhat isn’t supported by docker CE, we need to install container selinux first
+```bash
+#sudo yum install -y http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.74-1.el7.noarch.rpm
+sudo yum install -y docker-ce
+sudo systemctl enable docker.service
+sudo systemctl start docker
+
+
 go into ./simple-webapp, build the app and try to start it:
 
 ```bash
-./mvnw package && java -jar target/gs-spring-boot-docker-0.1.0.jar
+cd dse-k8-tutorial/simple-webapp
+mvn package && java -jar target/demo-simple-webapp-0.1.0.jar
 ```
 
 go to http://localhost:8080 to see your "Hello Docker World" message.
 
 ## Let's containerize it!
 
-Docker has a unique format: Dockerfile.
-
+Docker has a unique format: Dockerfile. Let's build our app from a `8-jdk-alpine` image:
 
 ```dockerfile
 FROM openjdk:8-jdk-alpine
@@ -26,12 +56,12 @@ ENTRYPOINT ["java","-jar","/app.jar"]
 we can now build the docker image with docker
 
 ```bash
-docker build -t simple-webapp --build-arg JAR_FILE=target/gs-spring-boot-docker-0.1.0.jar . 
+docker build -t simple-webapp --build-arg JAR_FILE=target/demo-simple-webapp-0.1.0.jar . 
 ```
 
 or also build it using the maven plugin:
 ```bash
-./mvnw install dockerfile:build 
+mvn install dockerfile:build 
 ```
 
 Let's see which image we now have available:
@@ -77,36 +107,37 @@ docker stop 5fddfe39a2cc
 ## Sending our image on a repository
 
 For now the docker image is local.
-Let's deploy our image to a registry to be able to access from anywhere.  To keep it simple, we'll start a local registry on our kubernetes master node. (We could push it to Dockerhub )
+Let's deploy our image to a registry to be able to access from anywhere.  To keep it simple, we'll be using the AWS ECR registry
 
-Connect to the EC2 k8 master and run a registry:
-
-```bash
-sudo iptables -N DOCKER
-docker run -d -p 5000:5000 --restart=always --name registry registry:2
-```
-Change your AWS security group to allow access on port 5000 (our registry).
-
-You can now push a local image to your registry:
+We can now push the image to docker:
 ```bash
 #sign in aws registry (ecr)
-$(aws ecr get-login --no-include-email --region us-east-2)
+$(aws ecr get-login --no-include-email --region eu-west-2)
 #create an image with a proper tag and push it:
-docker tag simple-webapp:latest 553261234129.dkr.ecr.us-east-2.amazonaws.com/k8s-training:yourName
-docker push 553261234129.dkr.ecr.us-east-2.amazonaws.com/k8s-training:yourName
+docker tag simple-webapp:latest 553261234129.dkr.ecr.eu-west-2.amazonaws.com/k8s-training:quentin
+docker push 553261234129.dkr.ecr.eu-west-2.amazonaws.com/k8s-training:quentin
 ```
 
-If you get the following error: `Get https://<registryIP>:5000/v2/: http: server gave HTTP response to HTTPS client`, you need to allow your client to talk with the registry without TLS:
 
+
+-------------------------------------------
+
+-------------------------------------------
+
+-------------------------------------------
+
+EXTRA deploy local repo with docker: If you get the following error: `Get https://<registryIP>:5000/v2/: http: server gave HTTP response to HTTPS client`, you need to allow your client to talk with the registry without TLS:
+      
 ```bash
 sudo vim /etc/docker/daemon.json
 { "insecure-registries":["<registryIP>:5000"] }
 sudo service docker restart
 ```
+
 Make sure the image is properly deployed:
 
 ```bash
-curl -X GET http://<registryIP>:5000/v2/_catalog 
+curl -X GET http:553261234129.dkr.ecr.eu-west-2.amazonaws.com/k8s-training/v2/_catalog 
 {"repositories":["k8-training/simple-webapp"]}
 curl -X GET http://<registryIP>:5000/v2/k8-training/simple-webapp/tags/list
 {"name":"k8-training/simple-webapp","tags":["latest"]}
