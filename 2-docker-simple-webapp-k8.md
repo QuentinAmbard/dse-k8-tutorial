@@ -26,7 +26,7 @@ ENTRYPOINT ["java","-jar","/app.jar"]
 we can now build the docker image with docker
 
 ```bash
-docker build -t simple-app --build-arg JAR_FILE=target/gs-spring-boot-docker-0.1.0.jar . 
+docker build -t simple-webapp --build-arg JAR_FILE=target/gs-spring-boot-docker-0.1.0.jar . 
 ```
 
 or also build it using the maven plugin:
@@ -89,10 +89,13 @@ Change your AWS security group to allow access on port 5000 (our registry).
 
 You can now push a local image to your registry:
 ```bash
-#create an image with a proper tag:
-docker tag simple-webapp <registryIP>:5000/k8-training/simple-webapp
-docker push <registryIP>:5000/k8-training/simple-webapp
+#sign in aws registry (ecr)
+$(aws ecr get-login --no-include-email --region us-east-2)
+#create an image with a proper tag and push it:
+docker tag simple-webapp:latest 553261234129.dkr.ecr.us-east-2.amazonaws.com/k8s-training:yourName
+docker push 553261234129.dkr.ecr.us-east-2.amazonaws.com/k8s-training:yourName
 ```
+
 If you get the following error: `Get https://<registryIP>:5000/v2/: http: server gave HTTP response to HTTPS client`, you need to allow your client to talk with the registry without TLS:
 
 ```bash
