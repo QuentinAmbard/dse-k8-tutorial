@@ -4,7 +4,7 @@ Having storage on our the local filesystem is probably not what we want to do at
 
 We need to provide independent volume to each of our pod. Because we are on AWS, we'll be using AWS EBS storage. 
 
-Remember that 1 EBS can only be mount to a sing le pod, and EBS AZ need to match the server AZ.
+Remember that 1 EBS can only be mount to a sing le pod, and EBS AZ need to match the server AZ (see multi-region.md for more details).
 
 Defining AWS as cloud provider can be quite challenging and won't be covered here (more details: https://blog.scottlowe.org/2018/09/28/setting-up-the-kubernetes-aws-cloud-provider/).
 
@@ -132,6 +132,9 @@ Remember that an EBS can only be mounted in a single node (it only support a spe
 
 ##Note on permission
 The process running inside your container needs to have enough permission to access your ebs.
+
+For security reason, it's considered best practice to run pods using random user id, making the user id unpredictable.
+
 You can either change the `template.spec.securityCotnext.fsGroup` to match your user group: 
 ```yaml
 template:

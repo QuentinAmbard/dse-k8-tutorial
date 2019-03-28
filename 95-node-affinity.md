@@ -1,6 +1,6 @@
 # Node Anti affinity
 
-Because we are using a NodePort, we can only have 1 DSE instance running on a k8s host.   
+It's generally best to run a single DSE instance per k8s host, especially if a NodePort is used.   
 
 This is done using a `podAntiAffinity` rule:
 

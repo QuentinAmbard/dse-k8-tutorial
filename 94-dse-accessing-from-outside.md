@@ -10,8 +10,187 @@ in order to pin dse to a restricted set of k8 host, put labels on the nodes:
 ```bash
 kubectl label nodes <node-name> <label-key>=<label-value>
 ```
+## Using a LoadBalancer per pod with a static IP
+!!With this solution, we need to be able to create a LoadBalancer with a fixed/static IP address. This isn't doable in AWS for now.!!
 
-### Using Hostport
+We can deploy 1 LoadBalancer per POD with a static IP, and use `externalTrafficPolicy: Local` to make sure the LB is only deployed against the host running the dse-0 pod. 
+
+If we have a replicaset with 3 instances, we'll need to deploy 3 services, 1 per pod.
+
+The ability to bind a loadBalancerIP depends of the provider. It should work on PKS and OpenShift, and I believe GKE and EKS have paid option for this feature (TODO: check this).  
+
+```yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: dse-lb-0
+  labels:
+    app: dse-lb-0
+spec:
+  externalTrafficPolicy: Local
+  selector:
+    statefulset.kubernetes.io/pod-name: dse-0
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  loadBalancerIP: 35.181.69.47
+  type: LoadBalancer
+``` 
+Once it's done, we can access each DSE node using the IP defined in the service.
+
+## Using an external plugin to map the loadbalancer to an external DNS
+Because we can't map the LoadBalancer to a static IP, another way to access the LoadBalancer from the outside is to automatically link a DNS to the LB IP.
+
+On AWS, we can use a external-dns service to map the ELB against a route53 DNS entry. https://github.com/kubernetes-incubator/external-dns/blob/master/docs/tutorials/aws.md
+ 
+Edit your kops setup to allow the nodes to change your route53 settings:
+```bash
+kops edit cluster ${CLUSTER_NAME}
+```
+```yaml
+spec:
+  additionalPolicies:
+    node: |
+      [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "route53:ChangeResourceRecordSets"
+          ],
+          "Resource": [
+            "arn:aws:route53:::hostedzone/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "route53:ListHostedZones",
+            "route53:ListResourceRecordSets"
+          ],
+          "Resource": [
+            "*"
+          ]
+        }
+      ]
+    master: |
+      [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "route53:ChangeResourceRecordSets"
+          ],
+          "Resource": [
+            "arn:aws:route53:::hostedzone/*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "route53:ListHostedZones",
+            "route53:ListResourceRecordSets"
+          ],
+          "Resource": [
+            "*"
+          ]
+        }
+      ]
+```
+
+Now you can run a cluster update to have the changes take effect:
+```bash
+kops update cluster ${CLUSTER_NAME} --yes
+```
+Kops is secured by default with RBAC (role based acces control), externalDNS will need to have access to k8 api, to make it easier we can set the default user as admin:
+```bash
+kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default
+```
+Start by installing the route53 mapper addon:
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: external-dns
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      containers:
+      - name: external-dns
+        image: registry.opensource.zalan.do/teapot/external-dns:v0.5.11
+        args:
+        - --source=service
+        - --source=ingress
+        - --provider=aws
+        - --registry=txt
+        - --txt-owner-id=<<PUT_UNIQUE_ID_HERE>>
+        - --log-level=debug
+
+```
+Create the external service deployment
+```bash
+kubectl apply -f external-dns.yml
+```
+
+
+Next, we need to add the `external-dns.alpha.kubernetes.io/hostname` annitation:
+
+```yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: simple-app-lb-0
+  labels:
+    app: simple-app-lb-0
+    dns: route53
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: test2.octoshield.com.
+	external-dns.alpha.kubernetes.io/ttl: 60
+spec:
+  selector:
+    statefulset.kubernetes.io/pod-name: simple-app-ss-0
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: simple-app-ss
+spec:
+  serviceName: simple-app-service
+  replicas: 3
+  selector:
+    matchLabels:
+      app: simple-app
+  template:
+    metadata:
+      labels:
+        app: simple-app #must match spec.selector.matchLabels
+    spec:
+      containers:
+      - name: simple-app
+        image: 553261234129.dkr.ecr.us-east-2.amazonaws.com/k8s-training:yourName
+        ports:
+        - containerPort: 8080  
+```
+Make sure the dns entries are properly updated:
+```bash
+kubectl logs -f external-dns-6d5668477-t6jkm
+```
+Once it's working with our simple app demo, we can do the same with a LB on 9042 
+The only downside is that 
+
+## Using Hostport
 Now that our pods are pinned to a specific host, we need to expose our pod port to the host.
 It can be done with the `hostPort: 9042` instruction.
 
