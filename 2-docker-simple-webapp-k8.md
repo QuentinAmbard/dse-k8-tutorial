@@ -16,7 +16,7 @@ echo "export M2_HOME=/usr/local/src/apache-maven" >> ~/.bashrc
 echo "export PATH=${M2_HOME}/bin:${PATH}" >> ~/.bashrc
 source ~/.bashrc
 cd
-mvn -version
+/usr/local/src/apache-maven/bin/mvn -version
 ```
 
 Install docker: start by removing any existing installation:
@@ -37,7 +37,7 @@ go into ./simple-webapp, build the app and try to start it:
 
 ```bash
 cd dse-k8-tutorial/simple-webapp
-mvn package && java -jar target/demo-simple-webapp-0.1.0.jar
+/usr/local/src/apache-maven/bin/mvn package && java -jar target/demo-simple-webapp-0.1.0.jar
 ```
 
 go to http://localhost:8080 to see your "Hello Docker World" message.
@@ -61,7 +61,7 @@ docker build -t simple-webapp --build-arg JAR_FILE=target/demo-simple-webapp-0.1
 
 or also build it using the maven plugin:
 ```bash
-mvn install dockerfile:build 
+/usr/local/src/apache-maven/bin/mvn install dockerfile:build 
 ```
 
 Let's see which image we now have available:
