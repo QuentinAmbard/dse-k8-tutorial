@@ -105,7 +105,7 @@ Kops is secured by default with RBAC (role based acces control), externalDNS wil
 ```bash
 kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default
 ```
-Start by installing the route53 mapper addon:
+Start by installing the external dns server:
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -130,7 +130,6 @@ spec:
         - --registry=txt
         - --txt-owner-id=<<PUT_UNIQUE_ID_HERE>>
         - --log-level=debug
-
 ```
 Create the external service deployment
 ```bash
@@ -149,7 +148,7 @@ metadata:
     app: simple-app-lb-0
     dns: route53
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: test2.octoshield.com.
+    external-dns.alpha.kubernetes.io/hostname: testqa.dse-k8s-training.com.
 	external-dns.alpha.kubernetes.io/ttl: 60
 spec:
   selector:

@@ -132,9 +132,9 @@ Next, we need to add the `external-dns.alpha.kubernetes.io/hostname` annotation:
 kind: Service
 apiVersion: v1
 metadata:
-  name: dse-lb-0
+  name: dse-lb-listen_address-0
   labels:
-    app: dse-lb-0
+    app: dse-lb-listen_address-0
   annotations:
     external-dns.alpha.kubernetes.io/hostname: dse-0-dc1-qa.dse-k8s-training.com.
 	external-dns.alpha.kubernetes.io/ttl: "60"
@@ -143,8 +143,8 @@ spec:
     statefulset.kubernetes.io/pod-name: dse-0
   ports:
   - protocol: TCP
-    port: 80
-    targetPort: 8080
+    port: 7000
+    targetPort: 7000
   type: LoadBalancer
 ```
 
@@ -158,14 +158,19 @@ The only remaining step is to setup the broadcast IP of the node (listen and nat
 We'll be using the name of the pod (`dse-0`, `dse-1` etc.) and retrieve it with
 
 ```yaml
-- name: POD_NAME
-  valueFrom:
-    fieldRef:
-      fieldPath: metadata.name
-- name: NATIVE_TRANSPORT_BROADCAST_ADDRESS
-  value: "$POD_NAME-dc1-qa.dse-k8s-training.com"
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: BROADCAST_ADDRESS
+          value: "$(POD_NAME)-dc1-qa.dse-k8s-training.com"
 ```
-TODO A TESTER !!
+
+If you want to delete everything, don't forget to delete your pvcs to restart with a clean setup: 
+
+```bash
+kubectl delete -f dse.yml && kubectl delete pvc dse-data-dse-0 && kubectl delete pvc dse-data-dse-1 && kubectl delete pvc dse-data-dse-2
+```
 
 
 
