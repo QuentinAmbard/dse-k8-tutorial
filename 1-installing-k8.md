@@ -118,7 +118,9 @@ Install flannel. TODO: check if it's not already setup with the `--networking fl
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
 ```
 
-## Manual installation
+Good it's working!
+
+## Manual installation (if needed)
 Start 3 CentOS instances on EC2 and start installing docker on your 3 instances:
 Make sure the instances are within an open VPC (ex: All traffic in/out over 172.31.0.0/16)
 
