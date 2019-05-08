@@ -73,8 +73,12 @@ public class ProductService {
                 log.info(ksCreation);
                 session.execute(ksCreation);
                 session.execute("CREATE TABLE IF NOT EXISTS demo.products (id int PRIMARY KEY, name text, price int)");
-                session.execute("INSERT INTO demo.products (id, name, price) values (1, 'iphone X', 1199)");
-                session.execute("INSERT INTO demo.products (id, name, price) values (2, 'Samsung S9', 800)");
+                session.execute("INSERT INTO demo.products (id, name, price) values (1, 'Vol Paris -> Nice', 230)");
+                session.execute("INSERT INTO demo.products (id, name, price) values (2, 'Vol Paris -> New York', 833)");
+                session.execute("INSERT INTO demo.products (id, name, price) values (3, 'Vol Paris -> San Francisco', 1324)");
+                session.execute("INSERT INTO demo.products (id, name, price) values (4, 'Vol Paris -> Madrid', 211)");
+                session.execute("INSERT INTO demo.products (id, name, price) values (5, 'Vol Paris -> Berlin', 321)");
+                session.execute("INSERT INTO demo.products (id, name, price) values (6, 'Vol Paris -> Tokyo', 924)");
                 selectProductsSt = session.prepare("select * from demo.products");
                 retry = Integer.MAX_VALUE;
             } catch (Exception e){
